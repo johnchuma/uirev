@@ -1,0 +1,87 @@
+.App {
+  text-align: start
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+ .modal-content  {
+  -webkit-border-radius: 0px !important;
+  -moz-border-radius: 0px !important;
+   color:red;
+  border-radius: 10px !important; 
+}
+.my-modal .modal-content{
+  background-color: #1B1B1B;
+
+}
+.my-review-modal .modal-content{
+  background-color: #1B1B1B;
+}
+.progress-animation path {
+  animation-name: progress;
+  animation-duration: 3s;
+  animation-delay: 0.5s;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+}
+.toast-overlay .toast-header button.close {
+  color: #fff;
+}
+.my-component-row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.my-component-col {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+
+
+
+
+
+.expertModal .modal-content{
+  background-color: #1B1B1B;
+
+}
+.scroll-container {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: gray gray;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

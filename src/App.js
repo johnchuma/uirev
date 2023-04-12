@@ -1,0 +1,67 @@
+import logo from './logo.svg';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter,Route,RouterProvider,Routes, createBrowserRouter, json } from 'react-router-dom';
+import Layout from './pages/layout';
+import HomePage from './pages/home_page';
+import UserPage from './pages/user_page';
+import ExpertPage from './pages/expert_page';
+import AuthProvider from './providers/auth_provider';
+import AdminRoute from './providers/admin_route';
+import UnathorizedPage from './pages/unathorized_page';
+import ErrorBoundary from './pages/error_boundary';
+import { findUser } from './controllers/app_controller';
+import { auth } from './controllers/firebase';
+
+function App() {
+  const router = createBrowserRouter([{
+         path:"/",
+         errorElement:<ErrorBoundary/>,
+         element:<Layout/>,
+         children:[{
+          path:"/",
+          index:true,
+          element:<HomePage/>
+         }]
+  },
+  {
+    path:"/user",
+    loader:async()=>{
+      const user=  await findUser(auth.currentUser);
+      if(user && user.accountType != "user"){
+        throw json({
+          message:"You do not have access to this page",
+          status:404
+        })
+      }
+   return user
+    },
+    errorElement:<ErrorBoundary/>,
+    element:<UserPage/>,
+    
+},
+      {
+        path:"/expert",
+        element:<ExpertPage/>,
+        loader:async()=>{
+          const user=  await findUser(auth.currentUser);
+          if(user && user.accountType != "expert"){
+            throw json({
+              message:"You do not have access to this page",
+              status:404
+            })
+          }
+       return user
+        },
+        errorElement:<ErrorBoundary/>
+      
+      }
+])
+  return (
+    <AuthProvider>
+         <RouterProvider router={router} />
+    </AuthProvider>
+  );
+}
+
+export default App;

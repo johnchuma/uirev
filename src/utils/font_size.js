@@ -1,0 +1,1 @@
+export let textSize = 12;
