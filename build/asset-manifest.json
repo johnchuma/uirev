@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.eb2ebcfb.css",
-    "main.js": "/static/js/main.32eb51f0.js",
-    "static/js/787.adfac430.chunk.js": "/static/js/787.adfac430.chunk.js",
-    "static/media/logo.svg": "/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
-    "index.html": "/index.html",
-    "main.eb2ebcfb.css.map": "/static/css/main.eb2ebcfb.css.map",
-    "main.32eb51f0.js.map": "/static/js/main.32eb51f0.js.map",
-    "787.adfac430.chunk.js.map": "/static/js/787.adfac430.chunk.js.map"
+    "main.css": "/uirev/static/css/main.eb2ebcfb.css",
+    "main.js": "/uirev/static/js/main.ff24ce09.js",
+    "static/js/787.adfac430.chunk.js": "/uirev/static/js/787.adfac430.chunk.js",
+    "static/media/logo.svg": "/uirev/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/uirev/index.html",
+    "main.eb2ebcfb.css.map": "/uirev/static/css/main.eb2ebcfb.css.map",
+    "main.ff24ce09.js.map": "/uirev/static/js/main.ff24ce09.js.map",
+    "787.adfac430.chunk.js.map": "/uirev/static/js/787.adfac430.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.eb2ebcfb.css",
-    "static/js/main.32eb51f0.js"
+    "static/js/main.ff24ce09.js"
   ]
 }
