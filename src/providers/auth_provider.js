@@ -8,6 +8,7 @@ const AuthProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState(null);
     useEffect(() => {
      const unsubscribe= auth.onAuthStateChanged((user)=>{
+            console.log(user)
             if(user){
                 findUser(user).then((response)=>{
                     setCurrentUser(response)
@@ -21,7 +22,7 @@ const AuthProvider = ({children}) => {
         })
        return unsubscribe
     }, []);
-    return <AuthContext.Provider value={{user:currentUser}}>
+    return <AuthContext.Provider value={{user:currentUser,setUser:setCurrentUser}} >
        {children}
     </AuthContext.Provider>
 }

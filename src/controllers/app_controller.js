@@ -26,7 +26,6 @@ export const googleSignIn = async()=>{
     const userDocumentSnapshot =  await getDoc(documentReferance)
     if(!userDocumentSnapshot.exists()){
         await setDoc(documentReferance,{...data})
-
     }
     
     return await findUser(response.user);
@@ -75,7 +74,7 @@ export const getAllUserDesigns = async()=>{
          console.log(error)
     }
 }
-export const uploadDesign = async(file,data,user)=>{
+export const uploadDesign = async(file,data)=>{
     try {
         const uid = uuidv4()
         //uploading to firebae
@@ -86,7 +85,7 @@ export const uploadDesign = async(file,data,user)=>{
         const downloadUrl = await getDownloadURL(referance)
         //Storing designs details to firestore
     const response = await setDoc(doc(firestore,'designs',uid),{
-            userID : user.uid,
+            userID : auth.currentUser.uid,
             id:uid,
             payment:'paid',
             downloadUrl,

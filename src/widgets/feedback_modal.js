@@ -6,6 +6,7 @@ import { BsChevronDown, BsChevronUp } from 'react-icons/bs'
 import { getDesignFeedbacks } from '../controllers/review_controller'
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import Paragraph from './paragraph'
 
 const FeebackModal = ({show,onHide,selectedDesign}) => {
    const [feedback, setFeedback] = useState([]);
@@ -35,22 +36,23 @@ const FeebackModal = ({show,onHide,selectedDesign}) => {
                 <Modal.Title className='mb-4' style={{fontSize:14,color:textColor}}>🎨 Features review Feedback 
                 </Modal.Title>
                 
+                
                 {
-                  selected? <div className='btn text-start px-3 py-3 mt-0' style={{borderColor:"#ffffff20", borderRadius:10}}>
+                  selected != null? <div className='btn text-start px-3 py-3 mt-0 w-100 position-relative' style={{borderColor:"#ffffff20", borderRadius:10}}>
                     <div onClick={()=>setSelected(null)} className='d-flex justify-content-between  px-0 py-0 mb-0 btn' >
-                  <div style={{fontSize:12,color:textColor,fontWeight:300}}>{feedback[selected].type}</div>
+                  <div style={{fontSize:12,color:textColor,fontWeight:500}}>{feedback[selected].type}</div>
                   <BsChevronUp color="#ffffff" onClick={()=>setSelected(null)} />
                  </div>
-                 <Row className='mt-2'>
+                 <Row className='mt-2 position-relative'>
                     <Col md={8}>
-                        <p style={{color:mutedText,fontSize:12,fontWeight:300}}>Deserunt do magna duis id ex nulla nostrud nulla dolor in. Aute pariatur tempor aliquip reprehenderit adipisicing velit commodo enim non do ea mollit laboris id. Sunt ipsum cupidatat amet ut cillum enim duis est sint aliquip et aute magna. Id laboris occaecat ullamco nisi occaecat. Nulla nostrud aliqua non incididunt veniam excepteur esse ad incididunt irure tempor. Qui laborum elit sit culpa aliquip sit. Dolor aliqua Lorem laborum nostrud ipsum laborum enim incididunt in sunt aliquip.</p>
+                        <Paragraph text={feedback[selected].review}/>
                     </Col>
                     <Col>
                     <div style={{ width: "90%", height: '100px' }}>
       <CircularProgressbar
         value={feedback[selected].percent}
         text={`${feedback[selected].percent}%`}
-        className="progress-animation"
+        className="progress-animation position-relative"
         strokeWidth={10}
         styles={{
           path: {

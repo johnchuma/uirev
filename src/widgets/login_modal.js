@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { Image, Modal, Stack } from 'react-bootstrap'
 import { mutedText, primaryColor, secondaryColor, textColor } from '../utils/color_pallate'
 import { BsGoogle } from 'react-icons/bs'
@@ -7,9 +7,12 @@ import Lottie from 'lottie-web'
 import { googleSignIn } from '../controllers/app_controller'
 import { textSize } from '../utils/font_size'
 import { useRedirect } from '../utils/redirect'
+import Paragraph from './paragraph'
+import { AuthContext } from '../providers/auth_provider'
 
 const LoginModal = ({show,onHide}) => {
     const animationController = useRef(null)
+  const {setUser} = useContext(AuthContext)
     const redirect = useRedirect()
     useEffect(() => {
         console.log('hi there')
@@ -35,10 +38,12 @@ const LoginModal = ({show,onHide}) => {
             <Modal.Body className='text-center'>
                 <div className='' style={{height:160,width:"100%"}} ref={animationController}></div>
                <div className='mt-1' style={{color:textColor,fontSize:20}}>Sign in to UIrev</div>
-               <div className='mt-1' style={{color:mutedText,fontSize:12,}}>Use your Google account to sign in and access <br/>all of our features and benefits.</div>
+               <Paragraph className="px-5" text={`Use your Google account to sign in and access all of our features and benefits.`}/>
 
                <div onClick={()=>{onHide(); googleSignIn().then((value)=>{
                 if(value){
+                    console.log(value)
+                    setUser(value)
                     redirect(value)
                 }
                })}} className='btn py-3 px-5 my-5' style={{borderColor:primaryColor,backgroundColor:primaryColor, borderRadius:10}}>

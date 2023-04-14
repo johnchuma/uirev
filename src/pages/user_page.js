@@ -37,6 +37,8 @@ const UserPage = () => {
    const [allFeedbacks,setAllFeedbacks] = useState([]);
    const [feebackTypeAvarages,setFeedbackTypeAvarages] = useState([]);
    const [step, setStep] = useState(1);
+   const [loading, setLoading] = useState(false);
+
    const {user} = useContext(AuthContext)
 
   
@@ -51,6 +53,7 @@ const UserPage = () => {
    const validateFormContinue = ()=>{
        if(imagePreview != "" & detail !=""){
         setStep(3)
+        uploadFile()
        }
        else{
         setShowToast(true)
@@ -65,10 +68,10 @@ const UserPage = () => {
             figmaLink:link,
             designDetails:detail,
         }
-       uploadDesign(file,data,user).then(()=>{
+       uploadDesign(file,data).then(()=>{
         const value = refresh+1;
         setRefresh(value);
-        
+        setUploading(false)
        })
     }
     else{
@@ -94,6 +97,8 @@ const UserPage = () => {
          getDesigns().then((response)=>{
             if(JSON.stringify(response) != JSON.stringify(designs)){
                 setDesigns(response)
+                
+              
             }
          });
          designsCounts().then((result)=>{
@@ -142,12 +147,10 @@ const UserPage = () => {
                 <div className='d-flex justify-content-between align-items-start'>
                 <div>
                 <h5>Hi 👋, {user.name} </h5>
-                <p style={{fontSize:12,color:mutedText}}>
-                Upload your latest design 
-                <span style={{color:'#fff'}}>👀🎨</span>
-                . We're excited to see what you've been working on! <br/>Once you do, you'll get feedback from our team within 24 hours 
-                <span style={{color:'#fff'}}>⏰👍</span>
-                </p>
+                <Paragraph text="
+                Upload your latest design We're excited to see what you've been working on! Once you do, you'll get feedback from our team within 24 hours "
+              
+              />
                 <Button className='border-0  mt-3'  onClick={()=>setShow(true)}  style={{color:textColor,borderRadius:"10px",fontSize:textSize, backgroundColor:primaryColor,padding:"10px 30px"}}>Upload</Button>
                  
                 </div>
@@ -156,23 +159,25 @@ const UserPage = () => {
 
                 </div>
                 
+               {
+                loading == true?<Spinner/>:<ScrollContainer autoScroll={true} style={{borderRadius:10}}  autoScrollSpeed={0.5} hideScrollbars={true} className="scroll-container mt-5">
+                {designs.map((design, index) => (
+               <div key={index} className="scroll-item me-2"  style={{ position: 'relative', width: '250px', height: '250px' }}>
+               <Image onClick={()=>{setShowReviewModal(true);setSelectedDesign(design)}} fluid src={design.downloadUrl} alt={`Design ${index + 1}`} style={{ maxWidth: '250px', height: '250px', borderRadius: '10px', objectFit: 'cover', zIndex: '0' }} />
+              {
+                design.inReview && <div style={{ position: 'absolute', top: '0', left: '0', zIndex: '1', width:"100%", height: '250px', borderRadius: '10px', backgroundColor: '#00000099' }}
+                className='d-flex justify-content-center text-center align-items-center'> 
+                <div>
+                <p className='py-0 my-0' style={{fontSize:textSize,fontWeight:400, color:secondaryColor,fontSize:textSize}} >In review</p>
+                </div>
+                </div>
+              } 
                
-                <ScrollContainer autoScroll={true} style={{borderRadius:10}}  autoScrollSpeed={0.5} hideScrollbars={true} className="scroll-container mt-5">
-                    {designs.map((design, index) => (
-                   <div key={index} className="scroll-item me-2"  style={{ position: 'relative', maxWidth: '250px', height: '250px' }}>
-                   <Image onClick={()=>{setShowReviewModal(true);setSelectedDesign(design)}} fluid src={design.downloadUrl} alt={`Design ${index + 1}`} style={{ maxWidth: '250px', height: '250px', borderRadius: '10px', objectFit: 'cover', zIndex: '0' }} />
-                  {
-                    design.inReview && <div style={{ position: 'absolute', top: '0', left: '0', zIndex: '1', width:"100%", height: '250px', borderRadius: '10px', backgroundColor: '#00000099' }}
-                    className='d-flex justify-content-center text-center align-items-center'> 
-                    <div>
-                    <p className='py-0 my-0' style={{fontSize:textSize,fontWeight:400, color:secondaryColor,fontSize:textSize}} >In review</p>
-                    </div>
-                    </div>
-                  } 
-                   
-                 </div>
-                    ))}
-                </ScrollContainer>
+             </div>
+                ))}
+            </ScrollContainer>
+               }
+                
 
                 <FeebackModal show={showReviewModal} selectedDesign={selectedDesign} onHide={()=>setShowReviewModal(false)} />
             </Col>
@@ -180,20 +185,23 @@ const UserPage = () => {
                 <Container>
                 <div style={{width:"100%",height:200}} ref={animationController}></div>
                 <div style={{fontSize:18}} className='text-white'>Statistics</div>
-                <p style={{color:mutedText,fontSize:textSize}}>Keep track of your <span style={{}}>designs</span></p>
+                <Paragraph text=" Keep track of your designs"/>
                 <Row className='text-center'>
                 
                 <Col  className='mt-2' md={4} >
-                    <h1 style={{color:textColor}}>{counts&&counts.inReview}</h1>
-                    <p style={{fontSize:textSize,color:mutedText,fontSize:textSize}} >In review</p>
+                    <h1 style={{color:textColor}}>{counts?counts.inReview:"0"}</h1>
+                <Paragraph text="In review"/>
+
                     </Col>
                     <Col className='mt-2' md={4} >
-                    <h1 style={{color:textColor}}>{counts&&counts.reviewed}</h1>
-                    <p style={{fontSize:textSize,color:mutedText,fontSize:textSize}} >Reviewed</p>
+                    <h1 style={{color:textColor}}>{counts?counts.reviewed:"0"}</h1>
+                <Paragraph text="Reviewed"/>
+
                     </Col>
                     <Col className='mt-2' md={4} >
-                    <h1 style={{color:textColor}}>{counts&&counts.totalDesigns}</h1>
-                    <p style={{fontSize:textSize,color:mutedText,fontSize:textSize}} >Total designs</p>
+                    <h1 style={{color:textColor}}>{counts?counts.totalDesigns:"0"}</h1>
+                <Paragraph text="Total designs"/>
+
                     </Col>
                 </Row>
                 </Container>
@@ -224,7 +232,7 @@ const UserPage = () => {
                    { 
                     step == 1 ?
                    <Modal.Body>
-                   <Modal.Title style={{fontSize:12,color:textColor}}>Pick your design image</Modal.Title>
+                   <Modal.Title style={{fontSize:12,color:textColor,fontWeight:300}}>Pick your design image</Modal.Title>
                    <div className='d-flex justify-content-center align-items-center mt-3 px-3' style={{height:100,width:"100%",border:'1px dotted #ffffff00',borderRadius:10,}}>
                     {imagePreview == ""?
                     <BsCloudUpload  onClick={()=>document.getElementById('file').click()}  color={secondaryColor} size={50} />
@@ -234,13 +242,13 @@ const UserPage = () => {
                     <Form.Control  onChange={handleFileInputChange} id='file' style={{display:'none'}} className='mx-5 py-3 bs-dark' type='file'/>
                   </div>
 
-                    <Modal.Title className='mt-3' style={{fontSize:12,color:textColor}}>Figma link (optional)</Modal.Title>
+                    <Modal.Title className='mt-3' style={{fontSize:12,color:textColor,fontWeight:300}}>Figma link (optional)</Modal.Title>
             
                      <Form>
                      {/* <input type="file" onChange={handleFileInputChange} /> */}
 
                         <Form.Control onChange={(event)=>setLink(event.target.value)} className='mt-2 py-2 text-white shadow-none' style={{backgroundColor:cardColor,borderColor:"#ffffff30", fontSize:11,borderRadius:8}} placeholder='Link'></Form.Control>
-                        <Modal.Title className='mt-3' style={{fontSize:12,color:textColor}}>Tell us what is your design about ?</Modal.Title>
+                        <Modal.Title className='mt-3' style={{fontSize:12,color:textColor,fontWeight:300}}>Tell us what is your design about ?</Modal.Title>
                         <Form.Control as='textarea' rows={4} onChange={(event)=>setDetail(event.target.value)} className='mt-2  text-white shadow-none' style={{backgroundColor:cardColor,borderColor:"#ffffff30", fontSize:11,borderRadius:8}} placeholder='Enter design descriptions'></Form.Control>
                      </Form>
                      <Stack>
@@ -268,8 +276,8 @@ const UserPage = () => {
                       {/* <div className='rounded-circle mb-3 me-auto ms-auto d-flex justify-content-center align-items-center' style={{backgroundColor:secondaryColor,height:70,width:70}}> */}
                       <BsCheck size={60} color={secondaryColor}/>
                      
-                     <Heading text="Uploaded successfully" className="mt-2"/>
-                      <Paragraph size={10} text="We will review your design and send feedback withing 24 hours"/>
+                     <Heading size={17} text="Uploaded successfully" className="mt-2"/>
+                      <Paragraph size={12} text="We will review your design and send feedback withing 24 hours"/>
                     </div>
                     }
 
