@@ -17,9 +17,16 @@ export const googleSignIn = async()=>{
         'name':user.displayName,
         'email':user.email,
         'photoURL':user.photoURL,
+        'verified':false,
+        'testStatus':'not-submitted',
+        'testprojectid':'',
+        'skills':[],
+        'step':0,
         'provider':'google',
         'timestamp':new Date(),
         'accountType':'user',
+        'challangesWon':[],
+        'likedDesigns':[]
         
     }
     const documentReferance = doc(firestore,'users',uid);
@@ -90,6 +97,8 @@ export const uploadDesign = async(file,data)=>{
             payment:'paid',
             downloadUrl,
             inReview:true,
+            challangeId:null,
+            likes:0,
             timestamp:new Date(),
             feedback:[],
             ...data

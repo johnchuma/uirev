@@ -12,18 +12,32 @@ import UnathorizedPage from './pages/unathorized_page';
 import ErrorBoundary from './pages/error_boundary';
 import { findUser } from './controllers/app_controller';
 import { auth } from './controllers/firebase';
+import JobsPage from './pages/jobs_page';
+import ChallangesPage from './pages/challanges_page';
 
 function App() {
-  const router = createBrowserRouter([{
+  const router = createBrowserRouter([
+    {
          path:"/",
          errorElement:<ErrorBoundary/>,
          element:<Layout/>,
-         children:[{
+         children:[
+          {
           path:"/",
           index:true,
           element:<HomePage/>
-         }]
-  },
+         },
+         {
+          path:'/jobs',
+          element:<JobsPage/>
+         },
+         {
+          path:'/challanges',
+          element:<ChallangesPage/>
+         },
+       
+        ]
+    },
   {
     path:"/user",
     loader:async()=>{

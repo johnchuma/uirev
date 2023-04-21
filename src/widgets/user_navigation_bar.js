@@ -29,7 +29,7 @@ const UserNavigationBar = () => {
                    <Stack direction='horizontal'>
                    <Image src={user.photoURL}  className='rounded-circle' style={{height:30, width:30,backgroundSize:'cover',objectFit:'cover'}}/>
                     <NavDropdown style={{backgroundColor:"black"}} title={user.name}>
-                        <NavDropdown.Item onClick={()=>logOut().then(()=>navigate('/'))} style={{fontSize:12}}>Logout</NavDropdown.Item>
+                        <NavDropdown.Item onClick={()=>logOut().then(()=>navigate('/'))} style={{fontSize:14}}>Logout</NavDropdown.Item>
                     </NavDropdown>
                   
                    </Stack>

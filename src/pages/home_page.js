@@ -129,11 +129,11 @@ useEffect(() => {
     return (
         <>
             <Container>
-            <br/>
-                    <Row id='home' className='mt-4'>
+         
+                    <Row id='home' className='mt-0'>
                         <Col md={6}  >
                        <div >
-                       <div className=' text-start pt-3 pb-3 mt-4 ' style={{fontWeight:600, color:textColor,fontSize:"48px"}}>
+                       <div className=' text-start pt-3 pb-3  ' style={{fontWeight:600, color:textColor,fontSize:"48px"}}>
                         We offer <span style={{color:secondaryColor}}>UI/UX</span> professional review for just 1$
                         </div>
                        
@@ -171,7 +171,7 @@ useEffect(() => {
                          </div>
                         </Col>
                         <Col md={6} className='px-0 mx-0'>
-                           <Image className='mt-5' src='home (2).png' fluid></Image>
+                           <Image className='mt-4' src='home (2).png' fluid></Image>
                         </Col>
 
                     </Row>
