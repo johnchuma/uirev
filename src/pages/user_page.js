@@ -6,7 +6,7 @@ import { backgroundColor, cardColor, colors, mutedBackground, mutedText, primary
 import { auth } from '../controllers/firebase'
 import { BsCheck, BsCloudUpload, BsFileMinus, BsPlus } from 'react-icons/bs'
 import { MdClose} from 'react-icons/md'
-import { getDesigns, uploadDesign } from '../controllers/app_controller'
+// import { getDesigns, uploadDesign } from '../controllers/app_controller'
 import SummaryItem from '../widgets/summary_item'
 import FeedbackItem from '../widgets/feedback_item'
 import ScrollContainer from 'react-indiana-drag-scroll'
@@ -20,6 +20,8 @@ import ErrorToast from '../utils/toasts'
 import Heading from '../widgets/heading'
 import Paragraph from '../widgets/paragraph'
 import DesignUploadModal from '../widgets/design_upload_modal'
+import { getDesigns, uploadDesign } from '../controllers/design_controller'
+import NoData from '../widgets/no_data'
 
 
 const UserPage = () => {
@@ -92,7 +94,12 @@ const UserPage = () => {
     })
  }, [refresh]);
 
-
+ const steps = [
+    {title:"Upload design"},
+    {title:"Pending designs",details:``},
+    {title:"Reviewed designs",details:``}
+];
+ const [currentStep, setCurrentStep] = useState(0);
 
   const [showToast, setShowToast] = useState(false);
     return (
@@ -100,75 +107,90 @@ const UserPage = () => {
         <div style={{overflow:"hidden"}}>
 
         </div>
+
         <UserNavigationBar/>
+        <div style={{height:1,backgroundColor:mutedBackground}} className=' w-100 mb-4'></div>
+        <Container>
+        <Heading size={15} className="" text="My designs"/>
+        </Container>
+        <div style={{height:1,backgroundColor:cardColor}} className=' w-100 mt-4'></div>
         <ErrorToast show={showToast}  onClose={()=>setShowToast(false)}/>
         <Container>
-        <Row className='mt-5'>
-            <Col md="8 text-white">
+            <Row>
+
+        {
+                 steps.map((item,index)=>{
+                return <Col className='px-0 mb-3'>
+                    <Stack direction='horizontal' style={{display:"flex",alignItems:"center"}} >
+                    <div  style={{height:50,width:50,borderColor:currentStep>=index?secondaryColor:mutedText,borderWidth:2,borderStyle:"solid"}} className='rounded-circle d-flex justify-content-center align-items-center mt-4'>
+                          <Heading className="p-0 m-0" fontWeight={400} color={currentStep>=index?secondaryColor:mutedText} size={15} text={index+1}/>
+                    </div>
+                    <div style={{flex:1}}>
+                    <Heading className="p-0 m-0  text-center" fontWeight={400}  color={currentStep>=index?secondaryColor:mutedText} size={12} text={item.title}/>
+                    <div style={{height:3, backgroundColor:currentStep>=index?secondaryColor:mutedText}} className=' rounded-circle mt-2'></div>
+                    </div>
+                    </Stack> 
+                </Col>
+
+                 })   
+                }
+            </Row>
+
+        <div className='p-5 mt-2 mb-3' style={{backgroundColor:cardColor,borderRadius:15}}>
+        
+        <Row className=''>
+            {
+                currentStep == 0 && <Col md="10 text-white">
                 <div className='d-flex justify-content-between align-items-start'>
                 <div>
-                <h5>Hi 👋, {user.name} </h5>
+                <Heading size={15} text={`Hi! ${user.name}`}/>
                 <Paragraph text="
-                Upload your latest design We're excited to see what you've been working on! Once you do, you'll get feedback from our team within 24 hours "
-              
+                Upload your latest design, We're excited to see what you've been working on! Once you do, you'll get feedback from our team within 24 hours "
               />
                 <Button className='border-0  mt-3'  onClick={()=>setShow(true)}  style={{color:textColor,borderRadius:"10px",fontSize:textSize, backgroundColor:primaryColor,padding:"10px 30px"}}>Upload</Button>
-                 
                 </div>
                <div>
                </div>
 
                 </div>
                 
-               {
-                loading == true?<Spinner/>:<ScrollContainer autoScroll={true} style={{borderRadius:10}}  autoScrollSpeed={0.5} hideScrollbars={true} className="scroll-container mt-5">
-                {designs.map((design, index) => (
-               <div key={index} className="scroll-item me-2"  style={{ position: 'relative', width: '250px', height: '250px' }}>
-               <Image onClick={()=>{setShowReviewModal(true);setSelectedDesign(design)}} fluid src={design.downloadUrl} alt={`Design ${index + 1}`} style={{ maxWidth: '250px', height: '250px', borderRadius: '10px', objectFit: 'cover', zIndex: '0' }} />
-              {
-                design.inReview && <div style={{ position: 'absolute', top: '0', left: '0', zIndex: '1', width:"100%", height: '250px', borderRadius: '10px', backgroundColor: '#00000099' }}
-                className='d-flex justify-content-center text-center align-items-center'> 
-                <div>
-                <p className='py-0 my-0' style={{fontSize:textSize,fontWeight:400, color:secondaryColor,fontSize:textSize}} >In review</p>
-                </div>
-                </div>
-              } 
-               
-             </div>
-                ))}
-            </ScrollContainer>
-               }
+              
                 
 
                 <FeebackModal show={showReviewModal} selectedDesign={selectedDesign} onHide={()=>setShowReviewModal(false)} />
             </Col>
-            <Col md="4" className='py-4 text-center' style={{backgroundColor:mutedBackground,borderRadius:10}}>
-                <Container>
-                <div style={{width:"100%",height:200}} ref={animationController}></div>
-                <div style={{fontSize:18}} className='text-white'>Statistics</div>
-                <Paragraph text=" Keep track of your designs"/>
-                <Row className='text-center'>
-                
-                <Col  className='mt-2' md={4} >
-                    <h1 style={{color:textColor}}>{counts?counts.inReview:"0"}</h1>
-                <Paragraph text="In review"/>
+            }
 
-                    </Col>
-                    <Col className='mt-2' md={4} >
-                    <h1 style={{color:textColor}}>{counts?counts.reviewed:"0"}</h1>
-                <Paragraph text="Reviewed"/>
-
-                    </Col>
-                    <Col className='mt-2' md={4} >
-                    <h1 style={{color:textColor}}>{counts?counts.totalDesigns:"0"}</h1>
-                <Paragraph text="Total designs"/>
-
-                    </Col>
-                </Row>
-                </Container>
-            </Col>
+            {
+              currentStep == 1? designs.filter((design)=>design.inReview == true).length == 0?<NoData/>: designs.filter((design)=>design.inReview == true).map((design)=>
+                <Col md="4">
+                <Image style={{borderRadius:10}} src={design.downloadUrl} fluid />
+                </Col>
+                ):<></>
+            }
+            
+            {
+             currentStep == 2? designs.filter((design)=>design.inReview == false).length == 0?<NoData/>: designs.filter((design)=>design.inReview==false).map((design)=>
+                <Col md="4">
+                <Image onClick={()=>{setShowReviewModal(true); setSelectedDesign(design)}} style={{borderRadius:10}} src={design.downloadUrl} fluid />
+                </Col>
+                ):<></>
+            }
+            
+           
         </Row>
-              
+        </div>
+      
+        <Stack direction='horizontal' className='d-flex justify-content-end '>
+                {/* {user.testStatus} */}
+                <Heading fontWeight={400} size={12} onClick={()=>{currentStep>0&&setCurrentStep(currentStep-1)}} color={currentStep >0?primaryColor:mutedText} className="pe-3 btn border-0" text="Prev"/>
+                <Heading fontWeight={400} size={15} className="px-3 " text={currentStep+1}/>
+                <Heading fontWeight={400} size={12} onClick={()=>{
+                      currentStep<steps.length-1&& setCurrentStep(currentStep+1)
+                    
+                    }} color={currentStep==steps.length-1?mutedText: primaryColor}  className="ps-3 btn border-0" text="Next"/>
+
+            </Stack>
           
                         
                   
@@ -179,7 +201,7 @@ const UserPage = () => {
       
         
         </Container>
-     
+       <FeebackModal show={showReviewModal} onHide={()=>{setShowReviewModal(false)}} selectedDesign={selectedDesign}/>
         <DesignUploadModal show={show} setShow={setShow} setShowToast={setShowToast} refresh={refresh} setRefresh={setRefresh}/>
         </>
     )

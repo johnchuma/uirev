@@ -3,7 +3,7 @@ import {Col,Row,Container,Button,Image,Stack, Modal, Card} from 'react-bootstrap
 import { backgroundColor, mutedBackground, mutedText, primaryColor, secondaryColor, textColor, vibrantColors } from '../utils/color_pallate'
 import {useNavigate} from 'react-router-dom'
 import { textSize } from '../utils/font_size'
-import {addTestData, findUser, googleSignIn} from '../controllers/app_controller'
+// import { findUser, googleSignIn} from '../controllers/app_controller'
 import { auth } from '../controllers/firebase'
 import { AuthContext } from '../providers/auth_provider'
 import LoginModal from '../widgets/login_modal'

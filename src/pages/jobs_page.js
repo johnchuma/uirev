@@ -15,8 +15,9 @@ import CustomButton from '../widgets/button'
 import { useNavigate } from 'react-router-dom'
 import ErrorToast from '../utils/toasts'
 import DesignUploadModal from '../widgets/design_upload_modal'
-import { findUser } from '../controllers/app_controller'
+// import { findUser } from '../controllers/app_controller'
 import { auth } from '../controllers/firebase'
+import { findUser } from '../controllers/auth_controller'
 
 const JobsPage = () => {
     const {user,setUser} = useContext(AuthContext)
@@ -105,15 +106,13 @@ const JobsPage = () => {
         <div className=''>
         <div style={{height:1,backgroundColor:cardColor}} className=' w-100 mb-4'></div>
         <Container>
-        <Heading size={15} className="" text="UI/UX designing job 💼 for you"/>
+        <Heading size={15} className="" text="UI/UX designing job for you"/>
         </Container>
         <div style={{height:1,backgroundColor:cardColor}} className=' w-100 mt-4'></div>
         </div>
         <ErrorToast show={showToast}  onClose={()=>setShowToast(false)}/>
-       
         <Container>
             <Row>
-                
                 {
                  steps.map((item,index)=>{
                 return <Col className='px-0 mb-3'>

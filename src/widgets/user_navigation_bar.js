@@ -6,8 +6,9 @@ import { Bs0Circle, Bs0CircleFill, BsBellFill, BsChevronBarDown, BsChevronDouble
 // import {primaryColor} from '../utils/color_pallate'
 import {useNavigate} from 'react-router-dom'
 import { auth } from '../controllers/firebase'
-import { logOut, signOut } from '../controllers/app_controller'
+// import { logOut, signOut } from '../controllers/app_controller'
 import { AuthContext } from '../providers/auth_provider'
+import { logOut } from '../controllers/auth_controller'
 
 const UserNavigationBar = () => {
    

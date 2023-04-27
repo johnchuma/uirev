@@ -20,20 +20,20 @@ const FeebackModal = ({show,onHide,selectedDesign}) => {
      })
    }, [show]);
     return (
-        <Modal centered  className='my-review-modal' size='xl' show={show} onHide={()=>{ onHide(); setSelected(null)}}>
+        <Modal centered  className='my-modal' size='xl' show={show} onHide={()=>{ onHide(); setSelected(null)}}>
         <Modal.Header className='border-0' closeLabel='close'>
         <Stack style={{width:"100%"}} direction='horizontal' className='d-flex justify-content-between'>
                 <Modal.Title style={{fontSize:14,color:textColor}}>Design review</Modal.Title>
                 <MdClose onClick={()=>{ onHide(); setSelected(null)}} size={20} color='white'/>
         </Stack>
         </Modal.Header>
-        <Modal.Body style={{height:"80vh"}}>
+        <Modal.Body>
             <Row>
-                <Col md="5">
+                <Col md="6">
                 <Image className='me-5' src={selectedDesign && selectedDesign.downloadUrl}  style={{borderRadius:"10px", width:"95%",objectFit:'contain'}} fluid/>
                 </Col>
                 <Col >
-                <Modal.Title className='mb-4' style={{fontSize:14,color:textColor}}>🎨 Features review Feedback 
+                <Modal.Title className='mb-4' style={{fontSize:14,color:textColor}}>Features
                 </Modal.Title>
                 
                 

@@ -9,7 +9,7 @@ import { cardColor, mutedBackground, mutedText } from './color_pallate'
 
 const ErrorToast = ({show,onClose}) => {
     return (
-        <ToastContainer  className='p-3' position='top-end'>
+        <ToastContainer  className='p-3 m-3' position='top-end'>
           <Toast   show={show} onClose={onClose} style={{borderRadius:30}} animation="true" autohide="true" bg='danger' >
           <Toast.Header closeVariant='white' style={{backgroundColor:"red"}}>
            

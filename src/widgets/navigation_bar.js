@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {Navbar,Container,Nav,Stack} from 'react-bootstrap'
-import {useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
 import { backgroundColor, mutedText, primaryColor, textColor } from '../utils/color_pallate'
 import { textSize } from '../utils/font_size'
 import { auth } from '../controllers/firebase'
-import { googleSignIn } from '../controllers/app_controller'
+import { googleSignIn } from '../controllers/design_controller'
 import { AuthContext } from '../providers/auth_provider'
 import { useRedirect } from '../utils/redirect'
 import LoginModal from './login_modal'
@@ -17,6 +17,8 @@ const NavigationBar = () => {
     const {user} = useContext(AuthContext)
     const redirect  = useRedirect()
     const [active, setActive] = useState(0);
+    const location = useLocation()
+    console.log(location.pathname)
     
     return (
         
@@ -27,19 +29,19 @@ const NavigationBar = () => {
             </Navbar.Brand>
             <Navbar.Collapse className='small'>
                 
-                {user?  <Nav className='ms-auto small'>
+                {  <Nav className='ms-auto small'>
                     {[{href:"#home",path:"/", title:"Home"},
                     {href:"",path:"/jobs", title:"Jobs"},
-                    {href:"#review",path:"challanges", title:"Challenges"}].map((item,index)=><Nav.Link
+                    {href:"#review",path:"/challanges", title:"Challenges"}].map((item,index)=><Nav.Link
                     onClick={()=>{
-                        setActive(index)
+                     
                         navigate(item.path)
-                    }} active={index==active?true:false} style={{fontSize:textSize,color:active==index?textColor:mutedText}}  className='px-3'>{item.title}</Nav.Link>)
+                    }} active={location.pathname == item.path?true:false} style={{fontSize:textSize,color:location.pathname == item.path?textColor:mutedText}}  className='px-3'>{item.title}</Nav.Link>)
                     }
                    
           
-                </Nav>:<Paragraph className="ms-auto my-0 py-0" text="Sign in to unlock this navigation bar"/>}
-               
+                </Nav>
+}
                 <Nav className='ms-auto small' >
                   { user ?
                   <Stack direction="horizontal">

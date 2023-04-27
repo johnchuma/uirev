@@ -1,7 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
 import { Route, Redirect, redirect } from 'react-router-dom';
 import  AuthContext  from './auth_provider';
-import { findUser } from '../controllers/app_controller';
+import { findUser } from '../controllers/auth_controller';
+// import { findUser } from '../controllers/app_controller';
 
 const AdminRoute = ({ component: Component, roles, ...rest }) => {
   const { user } = useContext(AuthContext);

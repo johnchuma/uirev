@@ -2,17 +2,19 @@ import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 import React, { useState } from 'react'
 import { Button, Form, Image, Modal, Spinner, Stack } from 'react-bootstrap';
 import { MdClose } from 'react-icons/md';
-import { secondaryColor, textColor,cardColor,primaryColor } from '../utils/color_pallate';
+import { secondaryColor, textColor,cardColor,primaryColor, backgroundColor } from '../utils/color_pallate';
 import Heading from './heading';
 import Paragraph from './paragraph';
 import { BsCheck, BsCloudUpload } from 'react-icons/bs';
 import { textSize } from '../utils/font_size';
 import { storePaymentInfo } from '../controllers/payment_controller';
-import { uploadDesign } from '../controllers/app_controller';
+import { uploadDesign } from '../controllers/design_controller';
 import { updateTestStatus } from '../controllers/job_controller';
+import { updateStep } from '../controllers/challenge_controller';
+import CustomButton from './button';
 
-const DesignUploadModal = ({show, setShow,setShowToast,type,refresh,setRefresh}) => {
- const titles = ["Upload design","Payment (1$ only)","Final"]
+const DesignUploadModal = ({show, setShow,setShowToast,type,refresh,setRefresh,challengeId,participants}) => {
+ const titles = ["Upload design","Pay 1$ to continue","Final"]
   const [file, setFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
   const [link, setLink] = useState("");
@@ -31,7 +33,7 @@ const DesignUploadModal = ({show, setShow,setShowToast,type,refresh,setRefresh})
     const validateFormContinue = ()=>{
     if(imagePreview != "" & detail !=""){
     setStep(2)
-    uploadFile();
+    // uploadFile();
     }
     else{
     setShowToast(true)
@@ -69,20 +71,26 @@ const DesignUploadModal = ({show, setShow,setShowToast,type,refresh,setRefresh})
               designDetails:detail,
               type:type??'normal'
           }
-         uploadDesign(file,data).then(()=>{
-            const value = refresh+1;
-            if(type == "test"){
-              updateTestStatus('submitted').then((value)=>{
+          if(type == "challenge"){
+            uploadDesign(file,data,challengeId).then(()=>{
+                 updateStep(challengeId,2,participants).then(()=>setRefresh())
+                 setUploading(false)
+           })
+          }
+          else{
+            uploadDesign(file,data,{challengeId}).then(()=>{
+              const value = refresh+1;
+              if(type == "test"){
+                updateTestStatus('submitted').then((value)=>{
+                  setRefresh(value);
+                })
+               }
+               else{
                 setRefresh(value);
-                setUploading(false)
-              })
-             }
-             else{
-              setRefresh(value);
-              setUploading(false)
-             }
-           
-         })
+               }
+           })
+          }
+         
 
        
 
@@ -94,14 +102,14 @@ const DesignUploadModal = ({show, setShow,setShowToast,type,refresh,setRefresh})
      }
     return (
        <div>
-        <Modal dialogClassName='my-modal' className='uploadModal' id="modal1" size='md' borderRadius='0px'  show={show} onHide={()=>{setShow(false);setStep(1)}} >
+        <Modal dialogClassName={step==2?'payment':'my-modal'} className='uploadModal' id="modal1" size='md'  borderRadius='0px'  show={show} onHide={()=>{setShow(false);setStep(1)}} >
                    <Modal.Header className='border-0'  >
                     <Stack style={{width:"100%"}} direction='horizontal' className='d-flex justify-content-between'>
                         <div>
-                        <Modal.Title style={{fontSize:14,color:textColor}}>  {titles[step-1]}  <span className='py-2 ms-2 px-2' style={{fontSize:10,borderRadius:40, backgroundColor:"orange", color:"black"}}>{step}/3 steps</span></Modal.Title>
+                        <Modal.Title style={{fontSize:14,color:step==2?backgroundColor:textColor}}>  {titles[step-1]}  <span className='py-2 ms-2 px-2' style={{fontSize:10,borderRadius:40, backgroundColor:"orange", color:"black"}}>{step}/3 steps</span></Modal.Title>
                        
                         </div>
-                    <MdClose onClick={()=>{setShow(false); setStep(1); setImagePreview("")}} size={20} color='white'/>
+                    <MdClose onClick={()=>{setShow(false); setStep(1); setImagePreview("")}} size={20} color={step==2?backgroundColor:textColor}/>
                     </Stack>
                    </Modal.Header>
                    { 
@@ -122,16 +130,12 @@ const DesignUploadModal = ({show, setShow,setShowToast,type,refresh,setRefresh})
                      <Form>
                      {/* <input type="file" onChange={handleFileInputChange} /> */}
 
-                        <Form.Control onChange={(event)=>setLink(event.target.value)} className='mt-2 py-2 text-white shadow-none' style={{backgroundColor:cardColor,borderColor:"#ffffff30", fontSize:11,borderRadius:8}} placeholder='Link'></Form.Control>
-                        <Modal.Title className='mt-3' style={{fontSize:12,color:textColor,fontWeight:300}}>Tell us what is your design about ?</Modal.Title>
-                        <Form.Control as='textarea' rows={4} onChange={(event)=>setDetail(event.target.value)} className='mt-2  text-white shadow-none' style={{backgroundColor:cardColor,borderColor:"#ffffff30", fontSize:11,borderRadius:8}} placeholder='Enter design descriptions'></Form.Control>
+                        <Form.Control onChange={(event)=>setLink(event.target.value)} className='mt-2 py-3 text-white shadow-none' style={{backgroundColor:cardColor,borderColor:"#ffffff30", fontSize:11,borderRadius:8}} placeholder='Link'></Form.Control>
+                        <Modal.Title className='mt-3' style={{fontSize:12,color:textColor,fontWeight:300}}>Design description?</Modal.Title>
+                        <Form.Control as='textarea' rows={4} onChange={(event)=>setDetail(event.target.value)} className='mt-2 py-3 text-white shadow-none' style={{backgroundColor:cardColor,borderColor:"#ffffff30", fontSize:11,borderRadius:8}} placeholder='Enter design description'></Form.Control>
                      </Form>
                      <Stack>
-                     <Button onClick={validateFormContinue} className='border-0 mt-3 py-3'  style={{color:textColor,borderRadius:"10px",fontSize:textSize, backgroundColor:primaryColor,padding:"10px 30px"}}>
-                          {  
-                          uploading ?<Spinner size='sm'/>:'Continue' 
-                          } 
-                     </Button>
+                     <CustomButton onClick={validateFormContinue} className="mt-4 border-0 py-3" text={`Continue`}/>
                      </Stack>
                    </Modal.Body>:
                  step ==2?

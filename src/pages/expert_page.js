@@ -2,13 +2,14 @@ import React,{useEffect,useState} from 'react'
 import UserNavigationBar from '../widgets/user_navigation_bar'
 import {Row,Col,Container,Stack,Form,Button,Spinner, Modal,Carousel,Image} from 'react-bootstrap'
 import { cardColor, mutedBackground, mutedText, primaryColor, secondaryColor, textColor } from '../utils/color_pallate'
-import { getAllUserDesigns } from '../controllers/app_controller'
+// import { getAllUserDesigns } from '../controllers/app_controller'
 import {MdClose, MdDetails} from 'react-icons/md'
 
 import ScrollContainer from 'react-indiana-drag-scroll'
 import { textSize } from '../utils/font_size'
 import { BsCheck, BsFileMinus, BsFilePlus, BsPlus, BsSubscript, BsSubtract } from 'react-icons/bs'
 import { getDesignFeedbacks, submitDesignReview, submitFeedback } from '../controllers/review_controller'
+import { getAllUserDesigns } from '../controllers/design_controller'
 
 const ExpertPage = () => {
     const [designs, setDesigns] = useState([]);
@@ -201,7 +202,7 @@ useEffect(() => {
               
         </Container>
 
-        <Modal dialogClassName='my-modal' id={`expertModal`} size='lg' borderRadius='60px'  show={showModal} onHide={()=>setShowModal(false)} >
+        <Modal dialogClassName='my-modal' id={`expertModal`} size='xl' borderRadius='60px'  show={showModal} onHide={()=>setShowModal(false)} >
                    <Modal.Header className='border-0'  >
                     <Stack style={{width:"100%"}} direction='horizontal' className='d-flex justify-content-between'>
                     <Modal.Title style={{fontSize:14,color:textColor}}>Review design</Modal.Title>

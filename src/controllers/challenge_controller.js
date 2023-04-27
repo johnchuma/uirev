@@ -1,4 +1,4 @@
-import { arrayUnion, collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore'
+import { FieldValue, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore'
 import React from 'react'
 import { auth, firestore } from './firebase'
 export const getChallenges = async()=>{
@@ -7,8 +7,8 @@ export const getChallenges = async()=>{
         const challenges  = await Promise.all(querySnapshots.docs.map( async (snapshot)=>{
             const challangeInfo = snapshot.data()
            
-          const users = await Promise.all(challangeInfo.participants.map(async (userId)=>{
-                  const user = await getDoc(doc(firestore,'users',userId))
+          const users = await Promise.all(challangeInfo.participants.map(async (item)=>{
+                  const user = await getDoc(doc(firestore,'users',item.id))
                   return user.data()
            }))
             return {...challangeInfo,participantsInfo:users}
@@ -24,7 +24,19 @@ export const joinChallenge = async(id)=>{
     try {
         const docReferance = doc(firestore,'challanges',id);
         await updateDoc(docReferance,{
-         participants:arrayUnion(auth.currentUser.uid)
+         participants:arrayUnion({id:auth.currentUser.uid,step:1})
+        })
+    } catch (error) {
+        console.error(error)
+    }
+}
+export const updateStep = async (id,step,participants)=>{
+    try {
+        const updatedParticipants = participants.filter(participant=>participant.id != auth.currentUser.uid)
+        updatedParticipants.push({id:auth.currentUser.uid,step:step,rank:0,paid:false})
+        const docReferance = doc(firestore,'challanges',id);
+        await updateDoc(docReferance,{
+         participants:updatedParticipants,
         })
     } catch (error) {
         console.error(error)

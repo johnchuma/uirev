@@ -10,10 +10,11 @@ import AuthProvider from './providers/auth_provider';
 import AdminRoute from './providers/admin_route';
 import UnathorizedPage from './pages/unathorized_page';
 import ErrorBoundary from './pages/error_boundary';
-import { findUser } from './controllers/app_controller';
+// import { findUser } from './controllers/app_controller';
 import { auth } from './controllers/firebase';
 import JobsPage from './pages/jobs_page';
 import ChallangesPage from './pages/challanges_page';
+import { findUser } from './controllers/auth_controller';
 
 function App() {
   const router = createBrowserRouter([

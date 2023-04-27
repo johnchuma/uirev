@@ -1,46 +1,9 @@
 import {setDoc,doc, getDoc,orderBy, addDoc,where, collection, getDocs,query, Timestamp} from 'firebase/firestore';
 import { auth, firestore, storage } from './firebase';
 import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
-import {  signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import {v4 as uuidv4} from 'uuid'
-import { useRedirect } from '../utils/redirect';
 
-export const googleSignIn = async()=>{
-    try {
-    const provider = new GoogleAuthProvider();
 
-    const response= await signInWithPopup(auth,provider);
-    const user   = response.user;
-    const uid = user.uid;
-    const data = {
-        'id':uid,
-        'name':user.displayName,
-        'email':user.email,
-        'photoURL':user.photoURL,
-        'verified':false,
-        'testStatus':'not-submitted',
-        'testprojectid':'',
-        'skills':[],
-        'step':0,
-        'provider':'google',
-        'timestamp':new Date(),
-        'accountType':'user',
-        'challangesWon':[],
-        'likedDesigns':[]
-        
-    }
-    const documentReferance = doc(firestore,'users',uid);
-    const userDocumentSnapshot =  await getDoc(documentReferance)
-    if(!userDocumentSnapshot.exists()){
-        await setDoc(documentReferance,{...data})
-    }
-    
-    return await findUser(response.user);
-    } catch (error) {
-        console.log("Failed to login",error)
-    }
-    
-}
 export const getDesigns = async()=>{
     try {
         const designs = [];
@@ -56,16 +19,22 @@ export const getDesigns = async()=>{
         console.log(error)
     }
 }
-export const findUser = async(usr)=>{
-   try {
-       const user = await getDoc(doc(firestore,'users',usr.uid));
-       if(user.exists()){
-        return user.data();
-       }
-   } catch (error) {
-    
-   }
+export const findChallengeUserDesigns = async(challangeId)=>{
+    try {
+        const designs = []
+        const qr = query(collection(firestore,'designs'),where('challangeId','==',challangeId))
+        const snapshots = await getDocs(qr)
+        snapshots.forEach((snapshot)=>{
+            designs.push(snapshot.data())
+            // console.log(snapshot.data())
+        });
+        return designs
+    } catch (error) {
+        console.error(error)
+    }
 }
+
+
 export const getAllUserDesigns = async()=>{
     try{
           const designs = [];
@@ -81,8 +50,9 @@ export const getAllUserDesigns = async()=>{
          console.log(error)
     }
 }
-export const uploadDesign = async(file,data)=>{
+export const uploadDesign = async(file,data,challangeId=null)=>{
     try {
+        // const {challangeId} = others
         const uid = uuidv4()
         //uploading to firebae
         const referance = ref(storage,`designs/${file.name}`);
@@ -97,7 +67,7 @@ export const uploadDesign = async(file,data)=>{
             payment:'paid',
             downloadUrl,
             inReview:true,
-            challangeId:null,
+            challangeId:challangeId,
             likes:0,
             timestamp:new Date(),
             feedback:[],
@@ -111,10 +81,3 @@ export const uploadDesign = async(file,data)=>{
 }
 
 
-export const logOut = async()=>{
-    try {
-        const response = await signOut(auth) 
-    } catch (error) {
-        console.log("Signed out successfully")
-    }
-}

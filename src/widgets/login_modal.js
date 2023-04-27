@@ -4,11 +4,11 @@ import { mutedText, primaryColor, secondaryColor, textColor } from '../utils/col
 import { BsGoogle } from 'react-icons/bs'
 import { MdClose } from 'react-icons/md'
 import Lottie from 'lottie-web'
-import { googleSignIn } from '../controllers/app_controller'
 import { textSize } from '../utils/font_size'
 import { useRedirect } from '../utils/redirect'
 import Paragraph from './paragraph'
 import { AuthContext } from '../providers/auth_provider'
+import { googleSignIn } from '../controllers/auth_controller'
 
 const LoginModal = ({show,onHide}) => {
     const animationController = useRef(null)

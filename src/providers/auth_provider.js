@@ -1,7 +1,8 @@
 import React, { Children, createContext,useEffect,useState }  from 'react'
 import { auth } from '../controllers/firebase';
-import { findUser } from '../controllers/app_controller';
+// import { findUser } from '../controllers/design_controller';
 import { useNavigate } from 'react-router-dom';
+import { findUser } from '../controllers/auth_controller';
 export const AuthContext = createContext(null)
 
 const AuthProvider = ({children}) => {

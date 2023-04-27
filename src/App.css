@@ -21,6 +21,14 @@
 
 }
 
+.payment .modal-content{
+  background-color: #0AD1A1;
+  color:black;
+  border-radius: 30;
+  border-style: solid;
+  padding: 20px;
+
+}
 .uploadModal .modal-content{
   border-radius: 30px;
 }
