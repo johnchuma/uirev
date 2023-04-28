@@ -9,13 +9,14 @@ import { useRedirect } from '../utils/redirect'
 import Paragraph from './paragraph'
 import { AuthContext } from '../providers/auth_provider'
 import { googleSignIn } from '../controllers/auth_controller'
+import { useNavigate } from 'react-router-dom'
 
-const LoginModal = ({show,onHide}) => {
+const LoginModal = ({show,onHide,path=""}) => {
     const animationController = useRef(null)
   const {setUser} = useContext(AuthContext)
     const redirect = useRedirect()
+    const navigate = useNavigate()
     useEffect(() => {
-        console.log('hi there')
         Lottie.loadAnimation({
             container:animationController.current,
             autoplay:true,
@@ -42,9 +43,14 @@ const LoginModal = ({show,onHide}) => {
 
                <div onClick={()=>{onHide(); googleSignIn().then((value)=>{
                 if(value){
-                    console.log(value)
                     setUser(value)
-                    redirect(value)
+                    if(path == ""){
+                        redirect(value)
+                    }
+                    else{
+                          navigate(path)
+                    }
+                    
                 }
                })}} className='btn py-3 px-5 my-5' style={{borderColor:primaryColor,backgroundColor:primaryColor, borderRadius:10}}>
                 <Stack direction='horizontal'>

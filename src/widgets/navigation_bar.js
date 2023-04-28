@@ -18,8 +18,7 @@ const NavigationBar = () => {
     const redirect  = useRedirect()
     const [active, setActive] = useState(0);
     const location = useLocation()
-    console.log(location.pathname)
-    
+    const [path, setPath] = useState("");  
     return (
         
            <Navbar   expand="lg" className='py-3 sticky-top'  style={{backgroundColor:backgroundColor}} variant="dark" >
@@ -34,8 +33,13 @@ const NavigationBar = () => {
                     {href:"",path:"/jobs", title:"Jobs"},
                     {href:"#review",path:"/challanges", title:"Challenges"}].map((item,index)=><Nav.Link
                     onClick={()=>{
-                     
-                        navigate(item.path)
+                        if(user){
+                            navigate(item.path)
+                        }
+                        else{
+                            setShowLoginModal(true)
+                            setPath(item.path)
+                        }
                     }} active={location.pathname == item.path?true:false} style={{fontSize:textSize,color:location.pathname == item.path?textColor:mutedText}}  className='px-3'>{item.title}</Nav.Link>)
                     }
                    
@@ -53,7 +57,7 @@ const NavigationBar = () => {
                    <Nav.Link onClick={()=>setShowLoginModal(true)} style={{backgroundColor:primaryColor,color:textColor,fontSize:textSize, fontWeight:400,padding:"10px 30px",borderRadius:"10px"}}>Sign in</Nav.Link>
                     </Stack>
                     }
-                    <LoginModal show={showLoginModal} onHide={()=>setShowLoginModal(false)}/>
+                    <LoginModal path={path} show={showLoginModal} onHide={()=>setShowLoginModal(false)}/>
                 </Nav>
             </Navbar.Collapse>
             </Container>
