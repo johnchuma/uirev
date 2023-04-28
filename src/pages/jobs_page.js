@@ -36,7 +36,7 @@ const JobsPage = () => {
         {title:"Get hired",details:``},
 
     ];
-    const designs =["E-commerce websites", "Mobile app interfaces", "Landing pages", "Dashboards", "Social media graphics", "Infographics", "Email templates", "Product packaging", "Brand identity", "Illustrations"];
+    const designs =["E-commerce websites", "Mobile app interfaces", "Landing pages", "Dashboards", "Information architecture", "Visual design", "Interaction design", "Color usage"];
     const [currentStep, setCurrentStep] = useState(0);
     const [canGoNextStep,setCanGoNextStep] = useState(false);
    
