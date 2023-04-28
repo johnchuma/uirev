@@ -170,7 +170,7 @@ useEffect(() => {
                             </Stack>
                          </div>
                         </Col>
-                        <Col md={6} className='px-0 mx-0'>
+                        <Col md={6}  className='px-0 mx-0 d-none d-md-block '>
                            <Image className='mt-4' src='home (2).png' fluid></Image>
                         </Col>
 
@@ -181,7 +181,7 @@ useEffect(() => {
                  <Row>
                     <Col md={1}>
                     </Col>
-                    <Col >
+                    <Col className='px-5' >
                     <Paragraph className="mt-2" text={`We are a team of experienced designers and developers who are passionate about creating beautiful,
                      functional, and user-friendly websites and applications. With years of experience in the industry, we have honed our skills and expertise to deliver high-quality design solutions that meet the unique needs of each of our clients.
                      ${moreAboutUs&&`
@@ -277,8 +277,8 @@ Our UI/UX review service covers 8+ design features, providing you with a compreh
                 </div>
             </Container>
             
-            <div className='py-5 mt-5' style={{backgroundColor:mutedBackground}}>
-              <Container>
+            <div className='py-5 mt-5 ' style={{backgroundColor:mutedBackground}}>
+              <Container className=''>
                  <Heading text="Disclaimer"/>
                  <Paragraph className="mt-3" text="The information provided on this website is for general 
                  informational purposes only. While we strive to keep the information up to date
