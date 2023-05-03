@@ -31,7 +31,8 @@ const NavigationBar = () => {
                 {  <Nav className='ms-auto small'>
                     {[{href:"#home",path:"/", title:"Home"},
                     {href:"",path:"/jobs", title:"Jobs"},
-                    {href:"#review",path:"/challanges", title:"Challenges"}].map((item,index)=><Nav.Link
+                    {href:"#challenges",path:"/challanges", title:"Challenges"},
+                    {href:"#blog",path:"/blog", title:"Blog"}].map((item,index)=><Nav.Link
                     onClick={()=>{
                         if(user){
                             navigate(item.path)

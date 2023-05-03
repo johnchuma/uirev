@@ -23,11 +23,10 @@ const ErrorBoundary = () => {
     return (
         <>
         <div style={{height:"100vh"}} className='d-flex justify-content-center align-items-center text-center'>
-            <div >
+            <div>
             <div className='' style={{height:200,width:"100%"}} ref={animationController}></div>
             <div className='display-4 mt-2 text-white' style={{fontWeight:600}}>Oops!</div>
             <p className='pt-3' style={{color:"#ffffff50",fontSize:textSize}}>Sorry, you can't view this page, <span onClick={()=>navigate("/")} className='btn border-0 shadow-none' style={{color:primaryColor,textDecoration:'underline'}}>Go back</span></p>
-
             </div>
          
         </div>

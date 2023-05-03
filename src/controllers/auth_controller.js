@@ -50,12 +50,42 @@ export const findUser = async(usr=auth.currentUser)=>{
      console.log(error)
     }
  }
-
+export const getUsersAndDesigns = async ()=>{
+ try {
+    const userReferance = query(collection(firestore,'users'),where("accountType","==","user"))
+    const querySnapshots = await getDocs(userReferance)
+    const users = await Promise.all(querySnapshots.docs.map(async (snapshot)=>{
+        const user = snapshot.data();
+        const designRef = query(collection(firestore,'designs'),where("userID","==",user.id))
+        const designsSnapshot = await getDocs(designRef)
+        const designs = await Promise.all(designsSnapshot.docs.map((snapshot)=>snapshot.data()))
+        return {...user,designs}
+    }))
+    return users
+ } catch (error) {
+    console.error(error)
+ }
+}
+export const getUsersAndPendingDesigns = async ()=>{
+    try {
+       const userReferance = query(collection(firestore,'users'),where("accountType","==","user"))
+       const querySnapshots = await getDocs(userReferance)
+       const users = await Promise.all(querySnapshots.docs.map(async (snapshot)=>{
+           const user = snapshot.data();
+           const designRef = query(collection(firestore,'designs'),where("userID","==",user.id),where("inReview","==",false))
+           const designsSnapshot = await getDocs(designRef)
+           const designs = await Promise.all(designsSnapshot.docs.map((snapshot)=>snapshot.data()))
+           return {...user,designs}
+       }))
+       return users
+    } catch (error) {
+       console.error(error)
+    }
+   }
 export const updatePaypalAccountInfo = async(account)=>{
     try {
         console.log(account)
         const docRef = doc(firestore,'users',auth.currentUser.uid)
-        
         await updateDoc(docRef,{
             paypalAccount:account
         })

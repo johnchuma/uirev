@@ -145,7 +145,7 @@ useEffect(() => {
                        {user?
                          <Button className='border-0 mt-5 ' onClick={()=>redirect(user)} style={{color:textColor,borderRadius:"10px",fontSize:textSize, backgroundColor:primaryColor,padding:"10px 30px"}}>Upload</Button>
                      :
-                     <Button className='border-0 mt-5 ' onClick={()=>setShowLoginModal(true)} style={{color:textColor,borderRadius:"10px",fontSize:textSize, backgroundColor:primaryColor,padding:"10px 30px"}}>Get started</Button>
+                     <Button className='border-0 mt-5  ' onClick={()=>setShowLoginModal(true)} style={{color:textColor,borderRadius:"10px",fontSize:textSize, backgroundColor:primaryColor,padding:"10px 30px"}}>Get started</Button>
                     
                     }
                     <LoginModal show={showLoginModal} onHide={()=>setShowLoginModal(false)}/>

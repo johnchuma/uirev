@@ -15,6 +15,8 @@ import { auth } from './controllers/firebase';
 import JobsPage from './pages/jobs_page';
 import ChallangesPage from './pages/challanges_page';
 import { findUser } from './controllers/auth_controller';
+import BlogPage from './pages/blog_page';
+import ReadBlog from './pages/read_blog';
 
 function App() {
   const router = createBrowserRouter([
@@ -35,6 +37,14 @@ function App() {
          {
           path:'/challanges',
           element:<ChallangesPage/>
+         },
+         {
+          path:'/blog',
+          element:<BlogPage/>
+         },
+         {
+          path:'/blog/:id',
+          element:<ReadBlog/>
          },
        
         ]

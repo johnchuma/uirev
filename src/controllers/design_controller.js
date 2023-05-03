@@ -24,43 +24,58 @@ export const findChallengeUserDesigns = async(challangeId)=>{
         const designs = []
         const qr = query(collection(firestore,'designs'),where('challangeId','==',challangeId))
         const snapshots = await getDocs(qr)
+     
         snapshots.forEach((snapshot)=>{
             designs.push(snapshot.data())
-            // console.log(snapshot.data())
         });
         return designs
     } catch (error) {
         console.error(error)
     }
 }
-
+export const findChallengeUserDesignsWithFeedback = async(challangeId)=>{
+    try {
+        const qr = query(collection(firestore,'designs'),where('challangeId','==',challangeId))
+        const ChallengeSnapshots = await getDocs(qr)
+          const designs = await Promise.all(ChallengeSnapshots.docs.map(async (snapshot)=>{
+            const design = snapshot.data()
+            const feedbacks = await Promise.all(design.feedback.map(async(value)=>{
+            const feedbackSnapshot = await getDoc(doc(firestore,'feedback',value))
+            return feedbackSnapshot.data()
+            }))
+            return {...design,feedbackDetails:feedbacks}
+          }))
+        return designs
+    } catch (error) {
+        console.error(error)
+    }
+}
 
 export const getAllUserDesigns = async()=>{
     try{
-          const designs = [];
-          const qr = query(collection(firestore,'designs'),where('inReview','==',true))
-          const response = await getDocs(qr)
-          
-          response.forEach((res)=>{
-            designs.push(res.data());
-          })
-         return designs
+        const qr = query(collection(firestore,'designs'),where('inReview','==',true));
+        const querySnapshots = await getDocs(qr);
+        const designsByUser = querySnapshots.docs.reduce(async (acc, snapshot) => {
+            const design = snapshot.data();
+            const userRef = doc(firestore,'users',design.userID);
+            const user = await getDoc(userRef);
+            const existingDesigns = (await acc) || [];
+            const userDesigns = existingDesigns.find((userDesigns) => userDesigns.id === user.id)?.designs || [];
+            return [...existingDesigns.filter((userDesigns) => userDesigns.id !== user.id), { id: user.id, ...user.data(), designs: [...userDesigns, design] }]
+        }, null);
+
+return designsByUser;
     }
     catch (error){
-         console.log(error)
+         console.error(error)
     }
 }
-export const uploadDesign = async(file,data,challangeId=null)=>{
+export const uploadDesign = async(file,data,challangeId="")=>{
     try {
-        // const {challangeId} = others
-        const uid = uuidv4()
-        //uploading to firebae
-        const referance = ref(storage,`designs/${file.name}`);
-        console.log(referance);
-        console.log(file)
-       const fileUploadResponse = await uploadBytes(referance,file);
-        const downloadUrl = await getDownloadURL(referance)
-        //Storing designs details to firestore
+    const uid = uuidv4()
+    const referance = ref(storage,`designs/${file.name}`);
+    const fileUploadResponse = await uploadBytes(referance,file);
+    const downloadUrl = await getDownloadURL(referance)
     const response = await setDoc(doc(firestore,'designs',uid),{
             userID : auth.currentUser.uid,
             id:uid,

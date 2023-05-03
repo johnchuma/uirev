@@ -28,13 +28,10 @@ const ChallangesPage = () => {
             setChallenges(response)
         })
     }, [refresh]);
-   console.log(challenges)
+//    console.log(challenges)
     return (
         <>
-
-<ErrorToast show={showToast}  onClose={()=>setShowToast(false)}/>
-
-
+        <ErrorToast show={showToast}  onClose={()=>setShowToast(false)}/>
         <div className=''>
         <div style={{height:1,backgroundColor:cardColor}} className=' w-100 mb-4'></div>
         <Container>
@@ -45,7 +42,7 @@ const ChallangesPage = () => {
         <Container>
         <Heading className="mt-4 mb-4 text-start" color={mutedText} fontWeight={400} size={12} text="All challanges"/>
 
-        <Row className='mb-5'>
+        <Row className='mb-5 '>
         {challenges.length>0? challenges.map((challenge,index)=><Col md={4}>
         <ChallangeCard challenge={challenge} challenges={challenges} index={index} setShowToast={setShowToast} setRefresh={setRefresh} refresh={refresh}/>
         </Col>):<NoData className={`mt-5`}/>}

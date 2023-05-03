@@ -1,6 +1,8 @@
 import { FieldValue, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore'
 import React from 'react'
 import { auth, firestore } from './firebase'
+import {v4 as uuidv4} from 'uuid'
+
 export const getChallenges = async()=>{
     try {
         const querySnapshots = await getDocs(collection(firestore,'challanges'))
@@ -38,6 +40,20 @@ export const updateStep = async (id,step,participants)=>{
         await updateDoc(docReferance,{
          participants:updatedParticipants,
         })
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+
+export const createChallenge = async (data)=>{
+    try {
+    const uid = uuidv4()
+    const challengeRef = doc(firestore,"challanges",uid)
+    const response = await setDoc(challengeRef,{
+        ...data,id:uid
+    })
+    return response
     } catch (error) {
         console.error(error)
     }

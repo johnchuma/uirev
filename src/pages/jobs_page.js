@@ -149,21 +149,21 @@ const JobsPage = () => {
         </Stack>
            
             </div> }
-            {currentStep == 1&&  <Row className='text-center d-flex justify-content-center my-3'>
+            {currentStep == 1&& <Row className='text-center d-flex justify-content-center my-3'>
             
                         {
-                            
-                            designs.map((type)=><Col xs="auto" className='mx-0 m-2'>
+                        designs.map((type)=>
+                        <Col xs="auto" className='mx-0 m-2'>
                             <div className='py-3 px-3'  style={{backgroundColor:mutedBackground,borderRadius:50}}>
                                 <Stack direction='horizontal'>
-                                <Paragraph  className="py-0 m-0 text-white" text={type} /> <div className='rounded-circle ms-1 d-flex justify-content-center align-items-center  ' style={{height:20,width:20,backgroundColor: user.skills.includes(type)&&secondaryColor}}>
+                                <Paragraph  className="py-0 m-0 text-white" text={type} /> 
+                                <div className='rounded-circle ms-1 d-flex justify-content-center align-items-center  ' style={{height:20,width:20,backgroundColor: user.skills.includes(type)&&secondaryColor}}>
                                     <BsCheck/>
                                 </div>
-
                                 </Stack>
                             </div>
-                        </Col>)
-                        }
+                        </Col>
+                        )}
                         
                         
                     </Row> }

@@ -32,8 +32,8 @@ const DesignUploadModal = ({show, setShow,setShowToast,type,refresh,setRefresh,c
 }
     const validateFormContinue = ()=>{
     if(imagePreview != "" & detail !=""){
-    setStep(2)
-    // uploadFile();
+    setStep(3)
+    uploadFile();
     }
     else{
     setShowToast(true)
@@ -78,7 +78,7 @@ const DesignUploadModal = ({show, setShow,setShowToast,type,refresh,setRefresh,c
            })
           }
           else{
-            uploadDesign(file,data,{challengeId}).then(()=>{
+            uploadDesign(file,data).then(()=>{
               const value = refresh+1;
               if(type == "test"){
                 updateTestStatus('submitted').then((value)=>{
@@ -88,6 +88,7 @@ const DesignUploadModal = ({show, setShow,setShowToast,type,refresh,setRefresh,c
                else{
                 setRefresh(value);
                }
+               setUploading(false)
            })
           }
          

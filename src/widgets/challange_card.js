@@ -90,8 +90,7 @@ const ChallangeCard = ({challenge,index,challenges,refresh,setRefresh,setShowToa
         setCurrentStep(getStep())
     }, [refresh]);
     useEffect(() => {
-
-        Lottie.destroy()
+       Lottie.destroy()
        Lottie.loadAnimation({
         container:animationController.current,
         path:"cat-sleeping-on-laptop.json",
@@ -103,8 +102,6 @@ const ChallangeCard = ({challenge,index,challenges,refresh,setRefresh,setShowToa
     const interval = setInterval(() => {
     setRemainingTime(remainingTime - 1000);
     setRemainingTime2(remainingTime2 - 1000);
-
-
     }, 1000);
 
     return () => clearInterval(interval);
