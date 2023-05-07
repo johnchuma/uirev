@@ -32,8 +32,8 @@ const DesignUploadModal = ({show, setShow,setShowToast,type,refresh,setRefresh,c
 }
     const validateFormContinue = ()=>{
     if(imagePreview != "" & detail !=""){
-    setStep(3)
-    uploadFile();
+    setStep(2)
+    // uploadFile();
     }
     else{
     setShowToast(true)
@@ -103,7 +103,7 @@ const DesignUploadModal = ({show, setShow,setShowToast,type,refresh,setRefresh,c
      }
     return (
        <div>
-        <Modal dialogClassName={step==2?'payment':'my-modal'} className='uploadModal' id="modal1" size='md'  borderRadius='0px'  show={show} onHide={()=>{setShow(false);setStep(1)}} >
+        <Modal dialogClassName={step==2?'payment':'my-modal'} centered className='uploadModal' id="modal1" size='md'  borderRadius='0px'  show={show} onHide={()=>{setShow(false);setStep(1)}} >
                    <Modal.Header className='border-0'  >
                     <Stack style={{width:"100%"}} direction='horizontal' className='d-flex justify-content-between'>
                         <div>
@@ -125,9 +125,7 @@ const DesignUploadModal = ({show, setShow,setShowToast,type,refresh,setRefresh,c
                     
                     <Form.Control  onChange={handleFileInputChange} id='file' style={{display:'none'}} className='mx-5 py-3 bs-dark' type='file'/>
                   </div>
-
                     <Modal.Title className='mt-3' style={{fontSize:12,color:textColor,fontWeight:300}}>Figma link (optional)</Modal.Title>
-            
                      <Form>
                      {/* <input type="file" onChange={handleFileInputChange} /> */}
 

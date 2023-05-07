@@ -32,7 +32,7 @@ const ChallengeTab = () => {
         </Stack>
         <Row className='mt-2'>
             { challenges.map((challenge,index)=>{
-              return  <Col md={4} onClick={()=>{
+              return  <Col md={6} onClick={()=>{
                  setSelectedChallange(index)
                  setShowDesignsModal(true)
               }}>

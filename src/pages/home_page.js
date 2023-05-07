@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import {Col,Row,Container,Button,Image,Stack, Modal, Card} from 'react-bootstrap'
-import { backgroundColor, mutedBackground, mutedText, primaryColor, secondaryColor, textColor, vibrantColors } from '../utils/color_pallate'
+import { backgroundColor, cardColor, mutedBackground, mutedText, primaryColor, secondaryColor, textColor, vibrantColors } from '../utils/color_pallate'
 import {useNavigate} from 'react-router-dom'
 import { textSize } from '../utils/font_size'
 // import { findUser, googleSignIn} from '../controllers/app_controller'
@@ -133,13 +133,15 @@ useEffect(() => {
                     <Row id='home' className='mt-0'>
                         <Col md={6}  >
                        <div >
-                       <div className=' text-start pt-3 pb-3  ' style={{fontWeight:600, color:textColor,fontSize:"48px"}}>
+                        <div className=' d-none d-md-block'>
+
+                        <div className=' text-start pt-3 pb-3 ' style={{fontWeight:600, color:textColor,fontSize:48}}>
                         We offer <span style={{color:secondaryColor}}>UI/UX</span> professional review for just 1$
+                       
+                       
                         </div>
                        
-                        
-                       </div>
-                     
+
                         <div className='small mt-2' style={{color:mutedText,fontSize:textSize}}>Upload your design for review now</div>
                        
                        {user?
@@ -148,15 +150,35 @@ useEffect(() => {
                      <Button className='border-0 mt-5  ' onClick={()=>setShowLoginModal(true)} style={{color:textColor,borderRadius:"10px",fontSize:textSize, backgroundColor:primaryColor,padding:"10px 30px"}}>Get started</Button>
                     
                     }
+                        </div>
+                     
+                        <div className='d-block d-md-none pe-4' style={{backgroundColor:backgroundColor,borderRadius:20}}>
+                        <div  className=' text-start  pt-3 pb-3 ' style={{fontWeight:600, color:textColor, fontSize:48}}>
+                        We offer <span style={{color:secondaryColor}}>UI/UX</span> professional review for just 1$
+                        </div>
+                          
+
+                        <div className='small mt-2' style={{color:mutedText,fontSize:textSize}}>Upload your design for review now</div>
+                       
+                       {user?
+                         <Button className='border-0 mt-5 ' onClick={()=>redirect(user)} style={{color:textColor,borderRadius:"10px",fontSize:textSize, backgroundColor:primaryColor,padding:"10px 30px"}}>Upload</Button>
+                     :
+                     <Button className='border-0 mt-5  ' onClick={()=>setShowLoginModal(true)} style={{color:textColor,borderRadius:"10px",fontSize:textSize, backgroundColor:primaryColor,padding:"10px 30px"}}>Get started</Button>
+                    
+                    }
+                       </div>
+                     
+                        </div>
+                       
                     <LoginModal show={showLoginModal} onHide={()=>setShowLoginModal(false)}/>
                     
                          <br/>
                          <br/>
-                         <br/>
+                      
                         
 
 
-                         <div className='mt-5'>
+                         <div className='mt-5 d-none d-md-block'>
                             <Stack direction='horizontal'>
                                 <div className='d-flex justify-content-center align-items-center' style={{height:20,width:20,borderRadius:20,backgroundColor:secondaryColor}}>
                                     <BsCheck color='black'/>
@@ -197,8 +219,8 @@ useEffect(() => {
                 <Heading className="text-center mt-0" text="Why choose us ?"/>
 
 <Row className='mt-5 align-items-stretch'>
-    <Col md="4">
-    <Card className='py-3 px-3  h-100' style={{backgroundColor:mutedBackground,borderRadius:20}}>
+    <Col md="4" className={`mb-2`}>
+    <Card className='py-3 px-3    h-100' style={{backgroundColor:mutedBackground,borderRadius:20}}>
         <Card.Header>
             <div style={{height:150,backgroundColor:vibrantColors[7],borderRadius:20}}>
             <div ref={animationController1} style={{height:150}}></div>
@@ -214,8 +236,8 @@ We understand that design can be expensive, which is why we've made it our missi
         </Card.Body>
     </Card>
     </Col>
-    <Col md="4">
-    <Card className='py-3 px-3 h-100' style={{backgroundColor:mutedBackground,borderRadius:20}}>
+    <Col md="4" className={`mb-2`}>
+    <Card className='py-3 px-3  h-100' style={{backgroundColor:mutedBackground,borderRadius:20}}>
         <Card.Header>
             <div style={{height:150,backgroundColor:vibrantColors[2],borderRadius:20}}>
             <div ref={animationController2} style={{height:150}}></div>
@@ -231,8 +253,8 @@ We know that time is of the essence when it comes to design projects, which is w
         </Card.Body>
     </Card>
     </Col>
-    <Col md="4">
-    <Card className='py-3 px-3 h-100' style={{backgroundColor:mutedBackground,borderRadius:20}}>
+    <Col md="4"  className={`mb-2`}>
+    <Card className='py-3 px-3  h-100' style={{backgroundColor:mutedBackground,borderRadius:20}}>
         <Card.Header>
             <div style={{height:150,backgroundColor:vibrantColors[1],borderRadius:20}}>
             <div ref={animationController3} style={{height:150}}></div>

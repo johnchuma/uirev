@@ -43,7 +43,7 @@ const ChallangesPage = () => {
         <Heading className="mt-4 mb-4 text-start" color={mutedText} fontWeight={400} size={12} text="All challanges"/>
 
         <Row className='mb-5 '>
-        {challenges.length>0? challenges.map((challenge,index)=><Col md={4}>
+        {challenges.length>0? challenges.map((challenge,index)=><Col md={6}>
         <ChallangeCard challenge={challenge} challenges={challenges} index={index} setShowToast={setShowToast} setRefresh={setRefresh} refresh={refresh}/>
         </Col>):<NoData className={`mt-5`}/>}
         </Row>

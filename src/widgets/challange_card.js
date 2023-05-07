@@ -1,6 +1,6 @@
 
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { Col, Container, FloatingLabel, Form, FormControl, Image, Modal, Row, Stack } from 'react-bootstrap'
+import { Button, Col, Container, FloatingLabel, Form, FormControl, Image, Modal, Row, Spinner, Stack } from 'react-bootstrap'
 import Heading from '../widgets/heading'
 import { backgroundColor, cardColor, completeColor, mutedBackground, mutedText, primaryColor, randomColor, secondaryColor, textColor, vibrantColors, waitingColor } from '../utils/color_pallate'
 import Paragraph from '../widgets/paragraph'
@@ -20,6 +20,7 @@ import { findChallengeUserDesigns } from '../controllers/design_controller'
 import { updatePaypalAccountInfo } from '../controllers/auth_controller'
 import FeebackModal from './feedback_modal'
 import ChallengeParticipantsModel from './challange_participants_model'
+import { textSize } from '../utils/font_size'
 
 const ChallangeCard = ({challenge,index,challenges,refresh,setRefresh,setShowToast}) => {
     const [showChallangeModal, setShowChallangeModal] = useState(false);
@@ -161,20 +162,22 @@ const ChallangeCard = ({challenge,index,challenges,refresh,setRefresh,setShowToa
     }
  
     const [showParticipantsModel, setShowParticipantsModel] = useState(false);   
+    const [loading, setLoading] = useState(false);   
+
     // console.log(findWinner().design)
     const [selectedDesignForFeedbackModal, setSelectedDesignForFeedbackModal] = useState(null);
     // console.log(userWithDesigns.filter((usr=>auth.currentUser.uid == usr.id))[0])
     const submittedDesigns = challenge.participants.filter(participant => participant.step == 2).length;
     // console.log(checkIfUserJoined())
     const beforeStarting = `${getTimeRemained(remainingTime).hours}hr : ${getTimeRemained(remainingTime).minutes}min : ${getTimeRemained(remainingTime).seconds}sec`;
-    const beforeSubmission =`${getTimeRemained(remainingTime2).hours}hr : ${getTimeRemained(remainingTime2).minutes}min : ${getTimeRemained(remainingTime2).seconds}sec`;
+    const beforeSubmission =`${getTimeRemained(remainingTime2).days}days: ${getTimeRemained(remainingTime2).hours}hr : ${getTimeRemained(remainingTime2).minutes}min : ${getTimeRemained(remainingTime2).seconds}sec`;
     return (
-        checkIfToShowChallenge()&& <div style={{backgroundColor:mutedBackground,borderRadius:10}} className='p-5'>
+        checkIfToShowChallenge()&& <div style={{backgroundColor:cardColor,borderRadius:10}} className='p-5'>
 
             {/* <div style={{height:130,backgroundColor:secondaryColor,borderRadius:20}}>
                 <div ref={challangeAnimationController} style={{height:130}}></div>
             </div> */}
-            <Heading size={13} fontWeight={400} className="mt-3" text={`Challange: ${challenge.name}`}/>
+            <Heading size={13} fontWeight={400} className="mt-3 mb-3" text={`Challange: ${challenge.name}`}/>
              <Stack direction='horizontal' >
                 <BsPeople color={mutedText} className='me-2' /> <div><Paragraph className="py-0 my-0" text={challenge.participants.length+ ' joined'}/></div>
              </Stack>
@@ -341,12 +344,22 @@ const ChallangeCard = ({challenge,index,challenges,refresh,setRefresh,setShowToa
                     }
 
             </Stack>:
-              <CustomButton onClick={()=>{
-                joinChallenge(selectedChallange.id)
-                let number = refresh+1;
-                // setCurrentStep(1)
-                setRefresh(number)
-                }} className="mt-4 border-0 w-100" text="Join challenge"/>
+              <Button onClick={()=>{
+                setLoading(true)
+                joinChallenge(selectedChallange.id).then(()=>{
+                    let number = refresh+1;
+                    setRefresh(number)
+                    setLoading(false)
+
+                    
+                })
+            
+                }}  className='border-0 mt-3 w-100 py-3  '  style={{color:textColor,borderRadius:"10px",fontSize:textSize, backgroundColor:primaryColor,padding:"10px 30px"}}>
+              {  
+              loading ?<Spinner size='sm'/>:'Join Challange' 
+              } 
+         </Button>
+             
          
         }
              

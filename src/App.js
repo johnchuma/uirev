@@ -35,7 +35,7 @@ function App() {
           element:<JobsPage/>
          },
          {
-          path:'/challanges',
+          path:'/challenges',
           element:<ChallangesPage/>
          },
          {

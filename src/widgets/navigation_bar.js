@@ -26,7 +26,7 @@ const NavigationBar = () => {
     const [showOffCanvans, setShowOffCanvans] = useState(false);
     const navItems = [{href:"#home",path:"/", title:"Home"},
     {href:"",path:"/jobs", title:"Jobs"},
-    {href:"#challenges",path:"/challanges", title:"Challenges"},
+    {href:"#challenges",path:"/challenges", title:"Challenges"},
     {href:"#blog",path:"/blog", title:"Blog"}];
     return (
         
@@ -37,9 +37,9 @@ const NavigationBar = () => {
             </Navbar.Brand>
             <div className='shadow-none d-block d-md-none ms-auto btn border-0' onClick={()=>setShowOffCanvans(true)}> 
                 <Stack className=''>
-                    <div  className='mb-2' style={{backgroundColor:textColor,width:25,height:2}}></div>
-                    <div  className='mb-2 ' style={{backgroundColor:textColor,width:10,height:2}}></div>
-                    <div  className='mb-2' style={{backgroundColor:textColor,width:30,height:2}}></div>
+                    <div  className='mb-1' style={{backgroundColor:textColor,width:25,height:2}}></div>
+                    <div  className='mb-1 ' style={{backgroundColor:textColor,width:25,height:2}}></div>
+                    <div  className='mb-1' style={{backgroundColor:textColor,width:25,height:2}}></div>
                 </Stack>  </div>
           <Offcanvas placement='end' show={showOffCanvans}  onHide={()=>setShowOffCanvans(false)} >
             <Offcanvas.Body className='p-5' style={{backgroundColor:cardColor}}>
@@ -51,9 +51,11 @@ const NavigationBar = () => {
                 {navItems.map((item,index)=><Paragraph color={location.pathname == item.path?textColor:mutedText} size={15}
                     onClick={()=>{
                         if(user){
+                            setShowOffCanvans(false)
                             navigate(item.path)
                         }
                         else{
+                            setShowOffCanvans(false)
                             setShowLoginModal(true)
                             setPath(item.path)
                         }
@@ -64,11 +66,11 @@ const NavigationBar = () => {
                      { user ?
                   <Stack direction="horizontal" className='ps-3 mt-4'>
                   {/* <Nav.Link style={{fontSize:textSize,color:textColor}} className='pe-3'>Hi👋,{user.name}</Nav.Link> */}
-                   <Nav.Link  onClick={()=>redirect(user)} style={{backgroundColor:primaryColor,color:textColor,fontSize:textSize, fontWeight:400,padding:"10px 30px",borderRadius:"10px"}}>Go to dashboard</Nav.Link>
+                   <Nav.Link  onClick={()=>{setShowOffCanvans(false); redirect(user)}} style={{backgroundColor:primaryColor,color:textColor,fontSize:textSize, fontWeight:400,padding:"10px 30px",borderRadius:"10px"}}>Go to dashboard</Nav.Link>
                     </Stack>:
                      <Stack direction="horizontal">
                     {/* <Nav.Link style={{fontSize:textSize,color:textColor}} className='pe-3'>Hi👋, there</Nav.Link> */}
-                   <Nav.Link  onClick={()=>setShowLoginModal(true)} style={{backgroundColor:primaryColor,color:textColor,fontSize:textSize, fontWeight:400,padding:"10px 30px",borderRadius:"10px"}}>Sign in</Nav.Link>
+                   <Nav.Link  onClick={()=>{setShowOffCanvans(false); setShowLoginModal(true)}} style={{backgroundColor:primaryColor,color:textColor,fontSize:textSize, fontWeight:400,padding:"10px 30px",borderRadius:"10px"}}>Sign in</Nav.Link>
                     </Stack>
                     }
             </Offcanvas.Body>

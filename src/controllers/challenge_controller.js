@@ -1,11 +1,11 @@
-import { FieldValue, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore'
+import { FieldValue, arrayRemove, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore'
 import React from 'react'
 import { auth, firestore } from './firebase'
 import {v4 as uuidv4} from 'uuid'
 
 export const getChallenges = async()=>{
     try {
-        const querySnapshots = await getDocs(collection(firestore,'challanges'))
+        const querySnapshots = await getDocs(collection(firestore,'challenges'))
         const challenges  = await Promise.all(querySnapshots.docs.map( async (snapshot)=>{
             const challangeInfo = snapshot.data()
            
@@ -24,7 +24,7 @@ export const getChallenges = async()=>{
 
 export const joinChallenge = async(id)=>{
     try {
-        const docReferance = doc(firestore,'challanges',id);
+        const docReferance = doc(firestore,'challenges',id);
         await updateDoc(docReferance,{
          participants:arrayUnion({id:auth.currentUser.uid,step:1})
         })
@@ -36,7 +36,7 @@ export const updateStep = async (id,step,participants)=>{
     try {
         const updatedParticipants = participants.filter(participant=>participant.id != auth.currentUser.uid)
         updatedParticipants.push({id:auth.currentUser.uid,step:step,rank:0,paid:false})
-        const docReferance = doc(firestore,'challanges',id);
+        const docReferance = doc(firestore,'challenges',id);
         await updateDoc(docReferance,{
          participants:updatedParticipants,
         })
@@ -49,11 +49,20 @@ export const updateStep = async (id,step,participants)=>{
 export const createChallenge = async (data)=>{
     try {
     const uid = uuidv4()
-    const challengeRef = doc(firestore,"challanges",uid)
+    const challengeRef = doc(firestore,"challenges",uid)
     const response = await setDoc(challengeRef,{
         ...data,id:uid
     })
     return response
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const deletechallenge = async (challenge)=>{
+    try {
+        const challengeRef = doc(firestore,"challenges",challenge.id)
+        await deleteDoc(challengeRef)
     } catch (error) {
         console.error(error)
     }

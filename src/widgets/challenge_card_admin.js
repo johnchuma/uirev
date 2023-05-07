@@ -6,7 +6,7 @@ import { backgroundColor, cardColor, completeColor, mutedBackground, mutedText, 
 import Paragraph from '../widgets/paragraph'
 import CustomButton from '../widgets/button'
 import Lottie from 'lottie-web'
-import { getChallenges, joinChallenge } from '../controllers/challenge_controller'
+import { deletechallenge, getChallenges, joinChallenge } from '../controllers/challenge_controller'
 import { MdClose } from 'react-icons/md'
 import { FaPeopleCarry, FaTrophy } from 'react-icons/fa'
 
@@ -118,6 +118,9 @@ const ChallengeCardAdmin = ({challenge,index,challenges,refresh,setRefresh,setSh
         setCurrentStep(getStep())
         setShow(false)
     }
+    const deleteChallenge = (id)=>{
+           deletechallenge(id).then(()=>setRefresh(refresh+1))
+    }
     const [showReviewMOdal, setShowReviewMOdal] = useState(false);
     const [paypalAccount, setPaypalAccount] = useState("");
     const [userWithDesigns, setUserWithDesigns] = useState([]);
@@ -156,11 +159,11 @@ const ChallengeCardAdmin = ({challenge,index,challenges,refresh,setRefresh,setSh
              <Stack direction='horizontal' >
                 <BsCheck2All color={mutedText} className='me-2' /> <div><Paragraph className="py-0 my-0" text={submittedDesigns+ ' submitted designs'}/></div>
              </Stack>
-            <CustomButton
-             onClick={()=>{setShowChallangeModal(true)
-                // setSelectedChallange(index)
-                }} 
-                className="mt-2 border-0 w-100" text= {challenge.closed?"Challange ended":"Reviewed designs"}/>
+             <Stack direction='horizontal'>
+             <CustomButton onClick={()=>{setShowChallangeModal(true)}} className="mt-2 border-0 w-100" text= {challenge.closed?"Ended":"Designs"}/>
+               
+             </Stack>
+           
       
        <ChallengeParticipantsModel show={showParticipantsModel} onHide={()=>{setShowParticipantsModel(false); setShowChallangeModal(true)}} users={userWithDesigns}/>
        <DesignUploadModal participants={challenge.participants} challengeId={challenge.id} show={show} setShow={setShow} setShowToast={setShowToast} refresh={refresh} setRefresh={afterUpload} type="challenge" />

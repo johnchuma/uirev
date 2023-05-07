@@ -62,7 +62,7 @@ export const getAllUserDesigns = async()=>{
             const existingDesigns = (await acc) || [];
             const userDesigns = existingDesigns.find((userDesigns) => userDesigns.id === user.id)?.designs || [];
             return [...existingDesigns.filter((userDesigns) => userDesigns.id !== user.id), { id: user.id, ...user.data(), designs: [...userDesigns, design] }]
-        }, null);
+        }, []);
 
 return designsByUser;
     }
